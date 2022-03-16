@@ -7,8 +7,8 @@ var PostSchema = new Schema({
     body: {type: String, minlength: 1, required: true},
     comments: [ {type: Schema.Types.ObjectId, ref: 'Comment'} ],
     timestamp: {type: Date, default: Date.now(), required: true},
-    visible: {type: Boolean, required: true}
-    // Would specify author if there was more than one
+    visible: {type: Boolean, required: true},
+    author_user: {type: String, required: true}
 });
 
 // Export model
