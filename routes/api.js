@@ -21,6 +21,9 @@ router.post('/login', userController.login);
 // Get list of posts
 router.get('/posts', postController.get_posts);
 
+// Get specific post
+router.get('/posts/:postId', postController.get_post);
+
 // Create a new post
 router.post('/posts', passport.authenticate('jwt', {session: false}), postController.create_post);
 
