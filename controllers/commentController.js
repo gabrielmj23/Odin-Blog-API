@@ -4,7 +4,7 @@ const { body, validationResult } = require('express-validator');
 
 // Get all comments from a post
 exports.get_comments = async function(req, res, next) {
-    var comments = await Post.findById(req.params.postId, 'comments');
+    var comments = await Post.findById(req.params.postId, 'comments').populate('comments');
     if (!comments) {
         // Invalid post id
         return res.status(404).json({message: 'Post was not found.'});
