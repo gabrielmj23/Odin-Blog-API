@@ -85,8 +85,8 @@ exports.update_post = [
         const errors = validationResult(req);
 
         // Get post's comments through id
-        var postComments = await Post.findById(req.params.postId, 'comments');
-        if (!postComments) {
+        var originalPost = await Post.findById(req.params.postId, 'comments timestamp');
+        if (!originalPost) {
             // Post id is not valid
             return res.status(404).json({message: 'This post was not found.'});
         }
@@ -96,7 +96,8 @@ exports.update_post = [
             title: req.body.title,
             description: req.body.description,
             body: req.body.body,
-            comments: postComments,
+            comments: originalPost.comments,
+            timestamp: originalPost.timestamp,
             visible: req.body.visible,
             author: req.body.author,
             _id: req.params.postId
@@ -108,10 +109,10 @@ exports.update_post = [
         }
 
         // All correct, update post
-        Post.findByIdAndUpdate(req.params.postId, post, {}, function(err, newPost) {
+        Post.findByIdAndUpdate(req.params.postId, post, {new: true}, function(err, newPost) {
             if (err) { return next(err); }
             // Send success message along with updated post
-            res.status(200).json({post, message: 'Post updated successfully.'});
+            res.status(200).json({post: newPost, message: 'Post updated successfully.'});
         });
     }
 ];
